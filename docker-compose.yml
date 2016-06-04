@@ -1,0 +1,39 @@
+version: '2'
+
+services:
+  parse-server:
+    image: yongjhih/parse-server
+    ports:
+      - 1337:1337
+    env_file: .env
+    environment:
+      - DATABASE_URI=mongodb://mongo
+      - SERVER_URL=http://0.0.0.0:1337
+  parse-dashboard:
+    image: yongjhih/parse-dashboard
+    env_file: .env
+    environment:
+      PARSE_DASHBOARD_ALLOW_INSECURE_HTTP: "true"
+      MOUNT_PATH: /parse-dashboard
+    ports:
+      - 4040:4040
+  mongo:
+    image: mongo
+  restore:
+    image: tutum/dockup
+    env_file: .env
+    environment:
+      BACKUP_NAME: parse-service
+      PATHS_TO_BACKUP: /data/db
+      RESTORE: 'true'
+    volumes_from:
+      - mongo
+  backup:
+    image: tutum/dockup
+    env_file: .env
+    environment:
+      BACKUP_NAME: parse-service
+      PATHS_TO_BACKUP: /data/db
+      RESTORE: 'false'
+    volumes_from:
+      - mongo
