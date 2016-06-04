@@ -23,7 +23,6 @@ services:
     image: tutum/dockup
     env_file: .env
     environment:
-      BACKUP_NAME: parse-service
       PATHS_TO_BACKUP: /data/db
       RESTORE: 'true'
     volumes_from:
@@ -32,7 +31,6 @@ services:
     image: tutum/dockup
     env_file: .env
     environment:
-      BACKUP_NAME: parse-service
       PATHS_TO_BACKUP: /data/db
       RESTORE: 'false'
     volumes_from:
